@@ -1,0 +1,135 @@
+<!-- todoapp/templates/todoapp/todo_list.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        div {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        form input {
+            flex-grow: 1;
+            margin-right: 10px;
+            padding: 10px;
+        }
+
+        form button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li .text {
+            flex-grow: 1;
+        }
+
+        li a {
+            text-decoration: none;
+            padding: 5px;
+            color: #333;
+        }
+
+        li a:hover {
+            background-color: #ddd;
+        }
+
+        li.completed {
+            background-color: #e0e0e0;
+        }
+
+        .delete a, .completed a {
+            display: inline-block;
+            padding: 5px;
+            color: #333;
+        }
+
+        .delete a:hover, .completed a:hover {
+            background-color: #ddd;
+        }
+
+        .delete a {
+            color: #e74c3c; /* Red color for delete links */
+        }
+
+        .completed a {
+            color: #4caf50; /* Green color for completed tasks */
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1><strong>Add Task</strong></h1>
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
+
+    <div>
+        <h2><strong>To-Do List</strong></h2>
+        <ul>
+            {% for todo in todos %}
+                <li{% if todo.completed %} class="completed"{% endif %}>
+                    <div class="text">{{ todo.title }}</div>
+                    <div>
+                        <a class="delete" href="{% url 'delete_todo' todo.id %}">Delete</a>
+                        {% if not todo.completed %}
+                            <a class="completed" href="{% url 'mark_completed' todo.id %}">Mark as Completed</a>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
+
+
